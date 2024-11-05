@@ -14,3 +14,5 @@ venv.bak/
 *.swo
 *~
 .venv/
+trained-matryoshka-model/
+checkpoints/
