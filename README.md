@@ -34,10 +34,12 @@ To train the Matryoshka model, use train_model.py. This script loads sample trai
     python train_model.py
     ```
 3.	Training Parameters:
-	•	batch_size: Number of examples per training batch.
-	•	epochs: Number of training epochs.
-	•	matryoshka_dims: List of dimensions to train the model on (e.g., [768, 512, 256, 128, 64]).
-	•	weights: Weighting for each dimension during training.
+   
+    - batch_size: Number of examples per training batch.
+    - epochs: Number of training epochs.
+    - matryoshka_dims: List of dimensions to train the model on (e.g., [768, 512, 256, 128, 64]).
+    - weights: Weighting for each dimension during training.
+
 
 The model will be saved at the specified output directory after training.
 
@@ -102,5 +104,3 @@ Steps:
 ## Contributing
 
 Contributions are welcome! Please submit a pull request with your changes.
-# Matryoshka
-# Matryoshka
