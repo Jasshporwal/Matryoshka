@@ -1,4 +1,3 @@
-
 from model import MatryoshkaEmbedder
 from utils import compute_similarity
 from sentence_transformers import SentenceTransformer

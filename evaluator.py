@@ -1,5 +1,5 @@
-
 from sentence_transformers.evaluation import EmbeddingSimilarityEvaluator
+from sentence_transformers import SentenceTransformer
 from typing import List, Tuple
 import numpy as np
 
@@ -41,10 +41,7 @@ eval_pairs = [
     ("text3", "text4", 0.9),
 ]
 
-# Create an instance of the MatryoshkaEvaluator class
 # You need to define the 'model' variable, for example:
-from sentence_transformers import SentenceTransformer
-
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 evaluator = MatryoshkaEvaluator(model)
