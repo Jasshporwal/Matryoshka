@@ -1,4 +1,4 @@
-# trainer.py
+
 from sentence_transformers import SentenceTransformer, InputExample, models
 from sentence_transformers.losses import MatryoshkaLoss, MultipleNegativesRankingLoss
 from torch.utils.data import DataLoader
