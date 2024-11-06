@@ -1,5 +1,5 @@
 from sentence_transformers import SentenceTransformer
-from typing import List, Union
+from typing import  Union
 import numpy as np
 
 
@@ -14,7 +14,7 @@ class MatryoshkaEmbedder:
         self.default_dim = default_dim
         self.available_dims = [768, 512, 256, 128, 64]
 
-    def encode(self, texts: Union[str, List[str]], dimension: int = None) -> np.ndarray:
+    def encode(self, texts: Union[str, list[str]], dimension: int = None) -> np.ndarray:
         """
         Encode texts using the Matryoshka model with specified dimension.
 
