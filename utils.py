@@ -18,8 +18,7 @@ def create_evaluation_pairs(texts: List[str]) -> List[Tuple[str, str, float]]:
     pairs = []
     for i in range(len(texts)):
         for j in range(i + 1, len(texts)):
-            # Calculate semantic similarity (simple example)
-            # In a real application, you might want to use a more sophisticated method
+            # Calculate semantic similarity 
             same_topic = i // 2 == j // 2
             partial_match = any(
                 word in texts[j].lower() for word in texts[i].lower().split()
