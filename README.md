@@ -27,7 +27,7 @@ This project implements a custom multi-resolution embedding model, called the Ma
 
 To train the Matryoshka model, use train_model.py. This script loads sample training data, prepares it, and trains the model to generate multi-dimensional embeddings.
 
-1.	Prepare Training Data: Define text pairs with similarity scores (0.0 to 1.0), indicating the degree of relatedness. You can edit    train_model.py to add your data or load from a file.
+1.	Prepare Training Data: Define text pairs with similarity scores (0.0 to 1.0), indicating the degree of relatedness. You can edit train_model.py to add your data or load from a file.
 
 2.	Run Training:
     ```
@@ -88,17 +88,28 @@ Steps:
     ```
 3.	The embeddings will be printed out for each input text.
 
-## Comparing Embeddings at Different Dimensions
+## Embedding Comparison System
+ 
+ The comparison_system.py handles the core logic for comparing embeddings between the Matryoshka Embedding model and the Opensource model
 
-The `compare_dimensions.py` file (if implemented) allows you to compare the similarity of embeddings generated at different dimensions. This is useful for understanding how the level of embedding detail impacts similarity calculations, and it demonstrates the flexibility of the Matryoshka model.
+ Steps:
+1. Model Loading: Loads the Matryoshka and OpenSource models and initializes their Pinecone indexes.
+2. Document Processing: Encodes documents and stores their embeddings in Pinecone.
+3. Query Comparison: Compares the query results from the Matryoshka and OpenSource models, calculating relevancy scores.
+4. Results Saving: Saves the results for each dimension in CSV files.
+
+## Main Script
+
+The main.py file is the entry point for running the embedding comparison system.
 
 Steps:
-
-1. Prepare Text Pairs: Add the text pairs you want to compare in `compare_dimensions.py`.
-2. Set Dimensions: Define the dimensions you wish to compare (e.g., `[768, 512, 256]`).
-3. Run the Script:
+1. Model Initialization: Loads Matryoshka models for various dimensions and checks model paths.
+2. Document Processing: Reads and processes documents from a specified folder.
+3. Query Execution: Executes predefined queries and compares results from both Matryoshka and OpenSource models.
+4. Results Output: Saves comparison results per dimension in CSV files and prints summary statistics.
+5. Run the Script:
    ```
-   python compare_dimensions.py
+   python main.py
    ```
 
 ## Contributing

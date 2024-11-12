@@ -1,4 +1,3 @@
-
 import os
 from typing import List, Dict
 from sentence_transformers import SentenceTransformer
@@ -104,8 +103,11 @@ class EmbeddingComparisonSystem:
                             },
                         }
                     ]
-               )
-    def calculate_context_relevancy(self, question_embedding: np.ndarray, answer_embeddings: np.ndarray) -> float:
+                )
+
+    def calculate_context_relevancy(
+        self, question_embedding: np.ndarray, answer_embeddings: np.ndarray
+    ) -> float:
         """
         Calculate the context relevancy between the question embedding and the answer embeddings.
 
@@ -117,20 +119,20 @@ class EmbeddingComparisonSystem:
             float: The average context relevancy.
         """
         similarities = cosine_similarity(
-            question_embedding.reshape(1, -1),
-            answer_embeddings
+            question_embedding.reshape(1, -1), answer_embeddings
         ).squeeze()
         return float(np.mean(similarities))
-    def query_and_compare(self, questions: List[str], dimensions: List[int], top_k: int = 3) -> Dict[int, pd.DataFrame]:
+
+    def query_and_compare(
+        self, questions: List[str], dimensions: List[int], top_k: int = 3
+    ) -> Dict[int, pd.DataFrame]:
         all_results = {}
-    
-    
+
         for dim in dimensions:
             results_data = []
             mat_relevancy_values = []
             os_relevancy_values = []
-    
-    
+
             for question in questions:
                 os_query_embedding = self.opensource_embedder.encode([question])[0]
                 os_results = self.opensource_index.query(
@@ -138,50 +140,70 @@ class EmbeddingComparisonSystem:
                     top_k=top_k,
                     include_metadata=True,
                 )
-    
-    
-                mat_query_embedding = self.matryoshka_embedders[dim].encode([question], dimension=dim)[0]
+
+                mat_query_embedding = self.matryoshka_embedders[dim].encode(
+                    [question], dimension=dim
+                )[0]
                 mat_results = self.matryoshka_indexes[dim].query(
                     vector=mat_query_embedding.tolist(),
                     top_k=top_k,
                     include_metadata=True,
                 )
-    
-    
-                os_answer_embeddings = np.array([self.opensource_embedder.encode([match.metadata["text"]])[0] for match in os_results.matches])
-                mat_answer_embeddings = np.array([self.matryoshka_embedders[dim].encode([match.metadata["text"]], dimension=dim)[0] for match in mat_results.matches])
-    
-    
-                os_relevancy = self.calculate_context_relevancy(os_query_embedding, os_answer_embeddings)
-                mat_relevancy = self.calculate_context_relevancy(mat_query_embedding, mat_answer_embeddings)
-    
-    
+
+                os_answer_embeddings = np.array(
+                    [
+                        self.opensource_embedder.encode([match.metadata["text"]])[0]
+                        for match in os_results.matches
+                    ]
+                )
+                mat_answer_embeddings = np.array(
+                    [
+                        self.matryoshka_embedders[dim].encode(
+                            [match.metadata["text"]], dimension=dim
+                        )[0]
+                        for match in mat_results.matches
+                    ]
+                )
+
+                os_relevancy = self.calculate_context_relevancy(
+                    os_query_embedding, os_answer_embeddings
+                )
+                mat_relevancy = self.calculate_context_relevancy(
+                    mat_query_embedding, mat_answer_embeddings
+                )
+
                 mat_relevancy_values.append(mat_relevancy)
                 os_relevancy_values.append(os_relevancy)
-    
-    
-                results_data.append({
-                    "Question": question,
-                    "Matryoshka_Answer": mat_results.matches[0].metadata["text"],
-                    "OpenSource_Answer": os_results.matches[0].metadata["text"],
-                    "Matryoshka_Relevancy": mat_relevancy,
-                    "OpenSource_Relevancy": os_relevancy,
-                })
-    
-    
-            mat_score = sum(mat_relevancy_values) / len(mat_relevancy_values) if mat_relevancy_values else 0
-            os_score = sum(os_relevancy_values) / len(os_relevancy_values) if os_relevancy_values else 0
-    
-    
+
+                results_data.append(
+                    {
+                        "Question": question,
+                        "Matryoshka_Answer": mat_results.matches[0].metadata["text"],
+                        "OpenSource_Answer": os_results.matches[0].metadata["text"],
+                        "Matryoshka_Relevancy": mat_relevancy,
+                        "OpenSource_Relevancy": os_relevancy,
+                    }
+                )
+
+            mat_score = (
+                sum(mat_relevancy_values) / len(mat_relevancy_values)
+                if mat_relevancy_values
+                else 0
+            )
+            os_score = (
+                sum(os_relevancy_values) / len(os_relevancy_values)
+                if os_relevancy_values
+                else 0
+            )
+
             for result in results_data:
                 result["Matryoshka_Score"] = mat_score
                 result["OpenSource_Score"] = os_score
-    
-    
+
             all_results[dim] = pd.DataFrame(results_data)
-    
+
         return all_results
-    
+
     def save_all_results_to_csv(
         self, results: Dict[int, pd.DataFrame], output_dir: str = "results"
     ):
