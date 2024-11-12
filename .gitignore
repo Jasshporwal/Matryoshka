@@ -16,3 +16,10 @@ venv.bak/
 .venv/
 trained-matryoshka-model/
 checkpoints/
+sample_data/
+trained-matryoshka-model_768/
+trained-matryoshka-model_512/
+trained-matryoshka-model_256/
+trained-matryoshka-model_128/
+trained-matryoshka-model_64/
+results/

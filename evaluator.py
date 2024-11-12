@@ -37,17 +37,14 @@ class MatryoshkaEvaluator:
 
 # Create a list of evaluation pairs (text1, text2, similarity_score)
 eval_pairs = [
-    ("The weather is beautiful toda", "This is a completely different topic", 0.8),
+    ("The weather is beautiful today", "This is a completely different topic", 0.1),
     ("text3", "text4", 0.9),
 ]
 
 # You need to define the 'model' variable, for example:
-model = SentenceTransformer("all-MiniLM-L6-v2")
-
+model = SentenceTransformer("tomaarsen/mpnet-base-nli-matryoshka")
 evaluator = MatryoshkaEvaluator(model)
-
 # Call the evaluate_dimensions method
 results = evaluator.evaluate_dimensions(eval_pairs)
-
 # Print the results
 print(results)

@@ -1,4 +1,3 @@
-
 from sentence_transformers import SentenceTransformer, InputExample, models
 from sentence_transformers.losses import MatryoshkaLoss, MultipleNegativesRankingLoss
 from torch.utils.data import DataLoader
@@ -39,29 +38,35 @@ class MatryoshkaTrainer:
         output_path: str = "matryoshka-model",
         warmup_steps: int = 100,
     ):
-        """Train the Matryoshka model."""
+        """Train the Matryoshka model for each dimension."""
         # Convert training data to InputExample format
         train_examples = self.prepare_training_data(train_data)
         train_dataloader = DataLoader(
             train_examples, batch_size=batch_size, shuffle=True
         )
 
-        # Create base loss - using MultipleNegativesRankingLoss instead of CoSENTLoss
-        base_loss = MultipleNegativesRankingLoss(self.model)
+        # Loop through each dimension in matryoshka_dims
+        for dim in self.matryoshka_dims:
+            logging.info(f"Training with dimension: {dim}")
 
-        # Wrap with MatryoshkaLoss
-        loss = MatryoshkaLoss(
-            model=self.model,
-            loss=base_loss,
-            matryoshka_dims=self.matryoshka_dims,
-        )
+            # Create a loss function with the current dimension
+            base_loss = MultipleNegativesRankingLoss(self.model)
+            # Optionally, you could use other loss functions here
+            loss = MatryoshkaLoss(
+                model=self.model,
+                loss=base_loss,
+                matryoshka_dims=[dim],  # Only use the current dimension
+            )
 
-        # Train the model
-        logging.info(f"Starting training with {len(train_examples)} examples")
-        self.model.fit(
-            train_objectives=[(train_dataloader, loss)],
-            epochs=epochs,
-            warmup_steps=warmup_steps,
-            output_path=output_path,
-            show_progress_bar=True,
-        )
+            # Train the model for the current dimension
+            logging.info(
+                f"Starting training with {len(train_examples)} examples for dimension {dim}"
+            )
+            self.model.fit(
+                train_objectives=[(train_dataloader, loss)],
+                epochs=epochs,
+                warmup_steps=warmup_steps,
+                output_path=f"{output_path}_{dim}",
+                show_progress_bar=True,
+            )
+            logging.info(f"Training for dimension {dim} completed!")

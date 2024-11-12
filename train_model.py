@@ -53,16 +53,18 @@ def main():
 
     logger.info("Initializing trainer...")
     trainer = MatryoshkaTrainer(
-        matryoshka_dims=[768, 512, 256, 128, 64], weights=[1.0, 0.8, 0.6, 0.4, 0.2]
+        base_model="sentence-transformers/paraphrase-mpnet-base-v2",  # Experiment with better models
+        matryoshka_dims=[768, 512, 256, 128, 64],  # Dimensions to train
+        weights=[1.0, 0.8, 0.6, 0.4, 0.2],  # Weights for dimensions
     )
 
     logger.info("Starting training...")
     trainer.train(
         train_data=train_data,
-        batch_size=16,
-        epochs=5,
+        batch_size=32,  # Experiment with larger batch size
+        epochs=10,  # Increase epochs for better convergence
         output_path=output_dir,
-        warmup_steps=100,
+        warmup_steps=200,  # Increase warmup steps for smoother training
     )
     logger.info("Training completed!")
 
