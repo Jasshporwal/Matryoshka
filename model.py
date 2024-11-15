@@ -39,15 +39,19 @@ class MatryoshkaEmbedder:
         Returns:
             numpy array of embeddings
         """
-        if dimension and dimension not in self.available_dims:
+        # Validate dimension
+        dimension = dimension or self.default_dim
+        if dimension not in self.available_dims:
             raise ValueError(f"Dimension must be one of {self.available_dims}")
 
-        dimension = dimension or self.default_dim
+        # Generate embeddings
+        embeddings = self.model.encode([texts] if isinstance(texts, str) else texts)
+        
+        # Truncate to the specified dimension
+        truncated_embeddings = np.array([emb[:dimension] for emb in embeddings])
 
-        # Get full embeddings
-        embeddings = self.model.encode(texts)
-
-        # Truncate to desired dimension
+        # If a single string was provided, return a 1D array instead of a 2D array
         if isinstance(texts, str):
-            return embeddings[:dimension]
-        return np.array([emb[:dimension] for emb in embeddings])
+            return truncated_embeddings[0]
+        return truncated_embeddings
+

@@ -52,7 +52,7 @@ def main():
 
     logger.info("Initializing trainer...")
     trainer = MatryoshkaTrainer(
-        base_model="sentence-transformers/paraphrase-mpnet-base-v2",  # Experiment with better models
+        base_model="tomaarsen/mpnet-base-nli-matryoshka",  # Experiment with better models
         matryoshka_dims=[768, 512, 256, 128, 64],  # Dimensions to train
         weights=[1.0, 0.8, 0.6, 0.4, 0.2],  # Weights for dimensions
     )

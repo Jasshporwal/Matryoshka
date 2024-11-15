@@ -8,7 +8,7 @@ import logging
 class MatryoshkaTrainer:
     def __init__(
         self,
-        base_model: str = "microsoft/mpnet-base",
+        base_model: str = "tomaarsen/mpnet-base-nli-matryoshka",
         matryoshka_dims: List[int] = [768, 512, 256, 128, 64],
         weights: List[float] = None,
     ):

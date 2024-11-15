@@ -21,6 +21,7 @@ def main():
             512: "trained-matryoshka-model_512",
             256: "trained-matryoshka-model_256",
             128: "trained-matryoshka-model_128",
+            64: "trained-matryoshka-model_64",
         }  # Specify base path for the models
 
         # Check if each model path exists
@@ -37,7 +38,7 @@ def main():
         )
 
         # Read documents from the specified folder
-        folder_path = "/Users/jassh.porwal/Desktop/matryoshka/sample_data"
+        folder_path = "doc-new-set"
         logger.info(f"Reading documents from {folder_path}")
         documents = system.read_documents_from_folder(folder_path)
 
@@ -53,7 +54,26 @@ def main():
         questions = [
             "What is contentstack?",
             "What is automation in contentstack?",
-            "What is CMS in content stack?",
+            "Tell me about the Contentstack CMS", 
+            "What is Content Modeling ?", 
+            "What is Advanced Search ?",
+            "What are the languages that are supported by Contenstack ?", 
+            "How to create a new content type ?", 
+            "How does Account Lockout work?",
+            "How to setup a notification with Contentstack ?", 
+            "How can I sync only entries from a specific content type in Contentstack's PHP SDK?",
+            "How do I map entries for data synchronization in a Contentstack iOS app?",
+            "Give me steps for installing YouTube ?", 
+            "What are the roles in Contentstack ?",
+            "How to make sure that each contentstack entry has a unique URL ?", 
+            "How do we use MongoDB in development ?", 
+            "How to optimise the database queries in SQL ?",
+            "How can AI be used to predict the search results ?", 
+            "What is predictive analysis ?",
+            "What is the difference between AI and ML ?", 
+            "What is FastAPI and how to use it ?",
+             "What are the firms that provide services in CMS ?", 
+             "How to deploy a heavy traffic website ?"
             # Add more questions as needed
         ]
 
@@ -63,6 +83,7 @@ def main():
             512,
             256,
             128,
+            64,
         ]  # Specify the model dimensions to test
         logger.info("Running queries and comparing results...")
 
